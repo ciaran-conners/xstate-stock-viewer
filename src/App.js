@@ -1,28 +1,16 @@
+import { useMachine } from '@xstate/react';
 import React from 'react';
 import './App.css';
 
-import {
-  getCompanyQuote,
-  getCompanyProfile,
-  getCompanyPeers,
-  getCompanyNews
-} from './lib/api';
-
-const params = {
-  tickerSymbol: 'aapl'
-};
-
-getCompanyQuote(params);
-getCompanyProfile(params);
-getCompanyPeers(params);
-getCompanyNews(params);
+import { createSearchMachine } from './lib/machines/searchMachine';
 
 function App() {
-  return (
-    <div className = "App" >
-      do the api
-    </div>
-  );
+  const [current, send] = useMachine(createSearchMachine({ context: {} }));
+  if (Object.keys(current.context.currentSearchResults).length === 0) {
+    return <div>loading...</div>;
+  }
+
+  return <div className="App">{JSON.stringify(current.context.currentSearchResults)}</div>;
 }
 
 export default App;
