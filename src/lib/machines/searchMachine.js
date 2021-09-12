@@ -7,6 +7,8 @@ import {
   getCompanyNews,
 } from '../api';
 
+import { getParamFromUrl } from '../utils';
+
 export const newSearch = '@states/newSearch';
 export const pending = '@states/pending';
 export const nextSearch = '@states/nextSearch';
@@ -56,20 +58,11 @@ const searchMachineJSON = ({ initialContext }) => {
     id: 'searchMachine',
     context: {
       currentSearchResults: {},
-      currentQuery: 'aapl',
+      currentQuery: getParamFromUrl('query') || 'aapl',
       ...initialContext,
     },
     initial: pending,
     states: {
-      // [newSearch]: {
-      //   on: {
-      //     [SEARCH]: {
-      //       target: pending,
-      //       actions: 'setCurrentQueryInCtx'
-      //     },
-      //   },
-      // },
-
       [pending]: {
         invoke: {
           src: 'doSearch',

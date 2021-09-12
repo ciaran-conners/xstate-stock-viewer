@@ -24,9 +24,9 @@ export default function CompanyProfile({ data }) {
           <p>industry</p>
         </div>
         <div>
-          <p>{data.marketCapitalization}</p>
-          <p>{data.shareOutstanding}</p>
-          <p>{data.finnhubIndustry}</p>
+          <p>{data.marketCapitalization || '---'}</p>
+          <p>{data.shareOutstanding || '---'}</p>
+          <p>{data.finnhubIndustry || '---'}</p>
         </div>
       </div>
     </div>
