@@ -25,6 +25,7 @@ const actions = {
 
 const guards = {
   noTickerFound: (ctx, ev) => {
+    return false;
     return ev.data.quoteData.currentPrice === 0;
   },
 };
