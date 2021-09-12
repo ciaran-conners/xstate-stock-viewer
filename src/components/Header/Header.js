@@ -2,24 +2,13 @@ import React from 'react';
 
 import './Header.css';
 
-import { SEARCH } from '../../lib/machines/searchMachine';
-
-export default function Header({ send, data = {} }) {
+export default function Header({ data = {}, handleKeyDown }) {
   return (
     <>
       <input
         className="search-bar"
         type="text"
-        onKeyDown={(ev) => {
-          if (ev.key === 'Enter') {
-            send({
-              type: SEARCH,
-              data: {
-                tickerSymbol: ev.target.value,
-              },
-            });
-          }
-        }}
+        onKeyDown={handleKeyDown}
       />
       {<QuoteDisplay {...data} />}
     </>

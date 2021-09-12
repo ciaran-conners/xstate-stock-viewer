@@ -6,3 +6,8 @@
 .App div {
   width: 50%;
 }
+
+.App .no-results {
+  font-weight: bold;
+  font-style: italic;
+}

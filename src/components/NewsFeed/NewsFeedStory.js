@@ -7,7 +7,7 @@ export default function NewsFeedStory({ id, datetime, url, image, headline }) {
   return (
     <li id={id}>
       <a href={url} target="_blank" rel="noreferrer">
-        <img src={image} alt={`${headline}`} />
+        <img src={image} alt={headline} />
 
         <span>
           <span>{hostname}</span>

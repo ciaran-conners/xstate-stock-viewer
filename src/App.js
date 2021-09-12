@@ -8,6 +8,7 @@ import {
   nextSearch,
   pending,
   noResults,
+  SEARCH,
 } from './lib/machines/searchMachine';
 
 import Header from './components/Header/Header';
@@ -26,7 +27,19 @@ function App() {
 
   return (
     <div>
-      <Header send={send} data={quoteData} />
+      <Header
+        handleKeyDown={(ev) => {
+          if (ev.key === 'Enter') {
+            send({
+              type: SEARCH,
+              data: {
+                query: ev.target.value,
+              },
+            });
+          }
+        }}
+        data={quoteData}
+      />
       {current.matches(nextSearch) && (
         <div className="App">
           <CompanyProfile data={profileData} />
@@ -35,7 +48,7 @@ function App() {
       )}
       {current.matches(noResults) && (
         <div className="App">
-          <div style={{ fontWeight: 'bold', fontStyle: 'italic' }}>
+          <div className="no-results">
             ticker not found
           </div>
         </div>

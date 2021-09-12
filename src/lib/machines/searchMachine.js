@@ -15,9 +15,12 @@ export const noResults = '@states/noResults';
 export const SEARCH = '@events/search';
 
 const actions = {
-  setSearchResInContext: assign({
+  setSearchResInCtx: assign({
     currentSearchResults: (ctx, ev) => ev.data,
   }),
+  setCurrentQueryInCtx: assign({
+    currentQuery: (ctx, ev) => ev.data.query
+  })
 };
 
 const guards = {
@@ -29,7 +32,7 @@ const guards = {
 const services = {
   doSearch: async (ctx, ev) => {
     const params = {
-      tickerSymbol: ev.data.tickerSymbol,
+      tickerSymbol: ctx.currentQuery,
     };
 
     const [quoteData, profileData, peersData, newsData] = await Promise.all([
@@ -53,17 +56,19 @@ const searchMachineJSON = ({ initialContext }) => {
     id: 'searchMachine',
     context: {
       currentSearchResults: {},
+      currentQuery: 'aapl',
       ...initialContext,
     },
-    initial: newSearch,
+    initial: pending,
     states: {
-      [newSearch]: {
-        on: {
-          [SEARCH]: {
-            target: pending,
-          },
-        },
-      },
+      // [newSearch]: {
+      //   on: {
+      //     [SEARCH]: {
+      //       target: pending,
+      //       actions: 'setCurrentQueryInCtx'
+      //     },
+      //   },
+      // },
 
       [pending]: {
         invoke: {
@@ -75,7 +80,7 @@ const searchMachineJSON = ({ initialContext }) => {
             },
             {
               target: nextSearch,
-              actions: 'setSearchResInContext',
+              actions: 'setSearchResInCtx',
             },
           ],
         },
@@ -85,6 +90,7 @@ const searchMachineJSON = ({ initialContext }) => {
         on: {
           [SEARCH]: {
             target: pending,
+            actions: 'setCurrentQueryInCtx'
           },
         },
       },
@@ -93,6 +99,7 @@ const searchMachineJSON = ({ initialContext }) => {
         on: {
           [SEARCH]: {
             target: pending,
+            actions: 'setCurrentQueryInCtx'
           },
         },
       },
