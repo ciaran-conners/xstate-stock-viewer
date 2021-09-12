@@ -25,8 +25,10 @@ function App() {
   const { quoteData, profileData, newsData } =
     current.context.currentSearchResults;
 
+  const { currentQuery } = current.context;
+
   return (
-    <div>
+    <>
       <Header
         handleKeyDown={(ev) => {
           if (ev.key === 'Enter') {
@@ -39,21 +41,20 @@ function App() {
           }
         }}
         data={quoteData}
+        query={currentQuery}
       />
-      {current.matches(nextSearch) && (
-        <div className="App">
-          <CompanyProfile data={profileData} />
-          <NewsFeed data={newsData} />
-        </div>
-      )}
-      {current.matches(noResults) && (
-        <div className="App">
-          <div className="no-results">
-            ticker not found
-          </div>
-        </div>
-      )}
-    </div>
+      <div className="App">
+        {current.matches(nextSearch) && (
+          <>
+            <CompanyProfile data={profileData} />
+            <NewsFeed data={newsData} />
+          </>
+        )}
+        {current.matches(noResults) && (
+          <div className="no-results">ticker not found</div>
+        )}
+      </div>
+    </>
   );
 }
 
