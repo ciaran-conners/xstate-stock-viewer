@@ -7,23 +7,29 @@ import {
   getCompanyNews,
 } from '../api';
 
-const idle = '@states/idle';
-const pending = '@states/pending';
+export const newSearch = '@states/newSearch';
+export const pending = '@states/pending';
+export const nextSearch = '@states/nextSearch';
+export const noResults = '@states/noResults';
 
-const SEARCH = '@events/search';
+export const SEARCH = '@events/search';
 
 const actions = {
   setSearchResInContext: assign({
-    currentSearchResults: (ctx, ev) => ev.data
+    currentSearchResults: (ctx, ev) => ev.data,
   }),
 };
 
-// const guards = {};
+const guards = {
+  noTickerFound: (ctx, ev) => {
+    return ev.data.quoteData.currentPrice === 0;
+  },
+};
 
 const services = {
-  doNewSearch: async () => {
+  doSearch: async (ctx, ev) => {
     const params = {
-      tickerSymbol: 'aapl',
+      tickerSymbol: ev.data.tickerSymbol,
     };
 
     const [quoteData, profileData, peersData, newsData] = await Promise.all([
@@ -32,13 +38,6 @@ const services = {
       getCompanyPeers(params),
       getCompanyNews(params),
     ]);
-
-    console.log({
-      quoteData,
-      profileData,
-      peersData,
-      newsData,
-    });
 
     return {
       quoteData,
@@ -52,13 +51,13 @@ const services = {
 const searchMachineJSON = ({ initialContext }) => {
   return {
     id: 'searchMachine',
-    initial: pending,
     context: {
       currentSearchResults: {},
-      ...initialContext
+      ...initialContext,
     },
+    initial: newSearch,
     states: {
-      [idle]: {
+      [newSearch]: {
         on: {
           [SEARCH]: {
             target: pending,
@@ -68,10 +67,32 @@ const searchMachineJSON = ({ initialContext }) => {
 
       [pending]: {
         invoke: {
-          src: services.doNewSearch,
-          onDone: {
-            target: idle,
-            actions: actions.setSearchResInContext,
+          src: 'doSearch',
+          onDone: [
+            {
+              cond: 'noTickerFound',
+              target: noResults,
+            },
+            {
+              target: nextSearch,
+              actions: 'setSearchResInContext',
+            },
+          ],
+        },
+      },
+
+      [nextSearch]: {
+        on: {
+          [SEARCH]: {
+            target: pending,
+          },
+        },
+      },
+
+      [noResults]: {
+        on: {
+          [SEARCH]: {
+            target: pending,
           },
         },
       },
@@ -79,5 +100,9 @@ const searchMachineJSON = ({ initialContext }) => {
   };
 };
 
-export const createSearchMachine = ({ initialContext }) =>
-  createMachine(searchMachineJSON({ initialContext }));
+export const createSearchMachine = ({ initialContext = {} }) =>
+  createMachine(searchMachineJSON({ initialContext })).withConfig({
+    actions,
+    services,
+    guards,
+  });

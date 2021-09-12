@@ -1,0 +1,7 @@
+.search-bar {
+  margin-right: 8px;
+}
+
+.quote-datum:not(last-of-type) {
+  margin-right: 8px;
+}

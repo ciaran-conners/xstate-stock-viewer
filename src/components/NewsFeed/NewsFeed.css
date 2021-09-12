@@ -1,0 +1,32 @@
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+li:hover {
+  background-color: #f0f2f7;
+}
+
+a img {
+  border: 1px solid black;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+a {
+  display: flex;
+  text-decoration: none;
+  color: unset;
+}
+
+span span:first-of-type {
+  margin-right: 8px;
+  font-style: italic;
+}

@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { getFromTo } from './utils';
+import { getFromTo, normalizeQuoteData } from './utils';
 
-const API_KEY = 'c4t7pviad3icjlroqil0';
+// create-react-app by default will ignore env keys that aren't prefaced with `REACT_APP_`
+const API_KEY = process.env.REACT_APP_API_KEY;
 const NEWS_RANGE_DAYS = 7;
 
 const client = axios.create({
@@ -21,7 +22,7 @@ export const getCompanyQuote = async ({ tickerSymbol }) => {
     params,
   });
 
-  return res.data;
+  return normalizeQuoteData(res.data);
 };
 
 export const getCompanyProfile = async ({ tickerSymbol }) => {
