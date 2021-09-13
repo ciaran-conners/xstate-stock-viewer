@@ -1,18 +1,22 @@
-ul {
+.news-feed {
+  border: 1px solid gainsboro;
+  padding: 8px;
+}
+.news-feed ul {
   padding: 0;
   list-style: none;
 }
 
-li {
+.news-feed li {
   margin-bottom: 8px;
   font-weight: bold;
 }
 
-li:hover {
+.news-feed li:hover {
   background-color: #f0f2f7;
 }
 
-a img {
+.news-feed a img {
   border: 1px solid black;
   width: 100px;
   height: 100px;
@@ -20,13 +24,13 @@ a img {
   margin-right: 8px;
 }
 
-a {
+.news-feed a {
   display: flex;
   text-decoration: none;
   color: unset;
 }
 
-span span:first-of-type {
+.article-source {
   margin-right: 8px;
   font-style: italic;
 }

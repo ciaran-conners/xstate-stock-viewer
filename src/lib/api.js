@@ -12,10 +12,10 @@ const client = axios.create({
   },
 });
 
-export const getCompanyQuote = async ({ tickerSymbol }) => {
+export const getCompanyQuote = async ({ tickerSymbol = '' }) => {
   // https://finnhub.io/docs/api/quote
   const params = {
-    symbol: tickerSymbol,
+    symbol: tickerSymbol.toUpperCase(),
   };
 
   const res = await client.get(`/quote`, {
@@ -25,10 +25,10 @@ export const getCompanyQuote = async ({ tickerSymbol }) => {
   return normalizeQuoteData(res.data);
 };
 
-export const getCompanyProfile = async ({ tickerSymbol }) => {
+export const getCompanyProfile = async ({ tickerSymbol = '' }) => {
   // https://finnhub.io/docs/api/company-profile2
   const params = {
-    symbol: tickerSymbol,
+    symbol: tickerSymbol.toUpperCase() ,
   };
 
   const res = await client.get(`/stock/profile2`, {
@@ -38,10 +38,10 @@ export const getCompanyProfile = async ({ tickerSymbol }) => {
   return res.data;
 };
 
-export const getCompanyPeers = async ({ tickerSymbol }) => {
+export const getCompanyPeers = async ({ tickerSymbol = '' }) => {
   // https://finnhub.io/docs/api/company-peers
   const params = {
-    symbol: tickerSymbol,
+    symbol: tickerSymbol.toUpperCase() ,
   };
 
   const res = await client.get(`/stock/peers`, {
@@ -51,14 +51,14 @@ export const getCompanyPeers = async ({ tickerSymbol }) => {
   return res.data;
 };
 
-export const getCompanyNews = async ({ tickerSymbol }) => {
+export const getCompanyNews = async ({ tickerSymbol = '' }) => {
   // https://finnhub.io/docs/api/company-news
   const { from, to } = getFromTo(NEWS_RANGE_DAYS);
 
   const params = {
     from,
     to,
-    symbol: tickerSymbol,
+    symbol: tickerSymbol.toUpperCase(),
   };
 
   const res = await client.get(`/company-news`, {

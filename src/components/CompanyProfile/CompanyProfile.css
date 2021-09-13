@@ -1,5 +1,6 @@
 .profile-card {
-  /* padding: 16px; */
+  border: 1px solid gainsboro;
+  padding: 8px;
 }
 
 .header-row {
@@ -8,10 +9,20 @@
   justify-content: space-between;
 }
 
-.header-row img {
-  width: 75px;
+.logo-container {
   height: 75px;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+}
+
+.logo-container span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.header-row .logo-container img {
+  width: 75px;
 }
 
 .contact-row {
@@ -21,7 +32,12 @@
 .contact-row a {
   display: block;
   text-decoration: none;
-  color: unset;
+}
+
+.contact-row a:not(:last-of-type) {
+  display: block;
+  text-decoration: none;
+  margin-bottom: 8px;
 }
 
 .contact-row a:hover {
@@ -33,6 +49,30 @@
   justify-content: space-between;
 }
 
-.info-row p {
-  margin: unset;
+.info-row div:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.peers-row {
+  /* display: flex; */
+  margin-top: 16px;
+}
+
+.peers-row a {
+  display: inline;
+}
+
+.peers-row a:not(:last-of-type) {
+  margin-right: 8px;
+}
+
+.peers-row button {
+  border: unset;
+  background: unset;
+  color: blue;
+}
+
+.peers-row button:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

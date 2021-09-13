@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './Header.css';
 
 export default function Header({ data = {}, handleOnChange, handleKeyDown, query }) {
   return (
-    <>
+    <div className="header-container">
       <input
         className="search-bar"
         type="text"
@@ -13,7 +13,7 @@ export default function Header({ data = {}, handleOnChange, handleKeyDown, query
         value={query}
       />
       {<QuoteDisplay {...data} />}
-    </>
+    </div>
   );
 }
 

@@ -8,7 +8,7 @@ export const getFromTo = (rangeDays) => {
 
   return {
     from: formatApiDate(from),
-    to: formatApiDate(to)
+    to: formatApiDate(to),
   };
 };
 
@@ -24,7 +24,7 @@ export const normalizeQuoteData = (quoteData) => {
     h: 'dayHighPrice',
     l: 'dayLowPrice',
     o: 'openPrice',
-    pc: 'previousClosePrice'
+    pc: 'previousClosePrice',
   };
 
   const normalizedData = {};
@@ -37,7 +37,7 @@ export const normalizeQuoteData = (quoteData) => {
   return normalizedData;
 };
 
-export const getParamFromUrl = (param) => {
+export const getUrlParam = (param) => {
   const params = new URLSearchParams(window.location.search);
   return params.get(param);
 };

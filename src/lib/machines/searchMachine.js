@@ -7,12 +7,13 @@ import {
   getCompanyNews,
 } from '../api';
 
-import { getParamFromUrl } from '../utils';
+import { getUrlParam } from '../utils';
 
 export const newSearch = '@states/newSearch';
 export const pending = '@states/pending';
 export const nextSearch = '@states/nextSearch';
 export const noResults = '@states/noResults';
+export const error = '@states/error';
 
 export const SEARCH = '@events/search';
 
@@ -21,13 +22,13 @@ const actions = {
     currentSearchResults: (ctx, ev) => ev.data,
   }),
   setCurrentQueryInCtx: assign({
-    currentQuery: (ctx, ev) => ev.data.query
-  })
+    currentQuery: (ctx, ev) => ev.data.query,
+  }),
 };
 
 const guards = {
   noTickerFound: (ctx, ev) => {
-    return ev.data.quoteData.currentPrice !== 0;
+    return ev.data.quoteData.currentPrice === 0;
   },
 };
 
@@ -58,7 +59,8 @@ const searchMachineJSON = ({ initialContext }) => {
     id: 'searchMachine',
     context: {
       currentSearchResults: {},
-      currentQuery: getParamFromUrl('query') || 'aapl',
+      // by default, init the app with a query for 'aapl'
+      currentQuery: 'aapl',
       ...initialContext,
     },
     initial: pending,
@@ -76,6 +78,9 @@ const searchMachineJSON = ({ initialContext }) => {
               actions: 'setSearchResInCtx',
             },
           ],
+          onError: {
+            target: error
+          }
         },
       },
 
@@ -83,7 +88,7 @@ const searchMachineJSON = ({ initialContext }) => {
         on: {
           [SEARCH]: {
             target: pending,
-            actions: 'setCurrentQueryInCtx'
+            actions: ['setCurrentQueryInCtx', 'updateQueryParamInUrl']
           },
         },
       },
@@ -92,17 +97,25 @@ const searchMachineJSON = ({ initialContext }) => {
         on: {
           [SEARCH]: {
             target: pending,
-            actions: 'setCurrentQueryInCtx'
+            actions: 'setCurrentQueryInCtx',
           },
         },
       },
+
+      [error]: {}
     },
   };
 };
 
-export const createSearchMachine = ({ initialContext = {} }) =>
-  createMachine(searchMachineJSON({ initialContext })).withConfig({
+export const createSearchMachine = ({ initialContext = {} }) => {
+  const query = getUrlParam('query');
+  if (query) {
+    // prefer the `query` param over the default, below
+    initialContext.currentQuery = query;
+  }
+  return createMachine(searchMachineJSON({ initialContext })).withConfig({
     actions,
     services,
     guards,
   });
+};
