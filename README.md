@@ -1,3 +1,11 @@
+# Some notes on getting this application
+
+You will need to set an env variable, `REACT_APP_API_KEY`, with your finnhub API key to use this application.
+
+In addition to the main funtionality, I also implemented the first 2 additional requirements:
+1. A user can init the widget with a preselected value using a query string.
+2. A 2 second debounced search will be made as the user types, if the current value they have entered is greater than 2 characters.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
