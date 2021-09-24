@@ -1,4 +1,4 @@
-# Some notes on getting this application
+# Some notes on getting this application started
 
 You will need to set an env variable, `REACT_APP_API_KEY`, with your finnhub API key to use this application.
 
